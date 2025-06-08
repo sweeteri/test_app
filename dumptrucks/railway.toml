@@ -1,0 +1,13 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+preDeployCommand = [
+    "python manage.py migrate",
+    "python manage.py collectstatic --noinput"
+]
+
+startCommand = "gunicorn dumptrucks.wsgi --log-file -"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyType = "always"
