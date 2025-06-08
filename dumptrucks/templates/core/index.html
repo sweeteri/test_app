@@ -1,0 +1,56 @@
+{% load static %}
+<head>
+    <title>Руда и самосвалы</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<form method="post">
+    {% csrf_token %}
+    <table border="1">
+        <tr>
+            <th>Бортовой номер</th>
+            <th>Модель</th>
+            <th>Макс. груз</th>
+            <th>Текущий вес</th>
+            <th>Перегруз %</th>
+            <th>Координаты разгрузки</th>
+        </tr>
+        {% for truck, form in truck_forms %}
+        <tr>
+            <td>{{ truck.number }}</td>
+            <td>{{ truck.model }}</td>
+            <td>{{ truck.max_capacity }}</td>
+            <td>{{ truck.current_weight }}</td>
+            <td>
+                {% if truck.current_weight > truck.max_capacity %}
+                {{ truck.overload | floatformat:2 }}%
+                {% else %}
+                0%
+                {% endif %}
+            </td>
+            <td>
+                <input type="text" name="{{ truck.id }}-coordinates" placeholder="X Y"
+                       value="{{ form.initial.coordinates }}" class="coord-input">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button type="submit">Рассчитать</button>
+</form>
+
+{% if show_results %}
+<h2>Результаты</h2>
+<table border="1">
+    <tr>
+        <th>Название</th>
+        <th>Объем до</th>
+        <th>Объем после</th>
+        <th>Качественные характеристики после разгрузки</th>
+    </tr>
+    <tr>
+        <td>Склад</td>
+        <td>{{ stock_before }}</td>
+        <td>{{ stock_after }}</td>
+        <td>{{ new_sio2 }}% SiO₂, {{ new_fe }}% Fe</td>
+    </tr>
+</table>
+{% endif %}

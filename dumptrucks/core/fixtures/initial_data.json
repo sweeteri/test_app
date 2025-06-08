@@ -1,0 +1,48 @@
+[
+  {
+    "model": "core.truck",
+    "pk": 1,
+    "fields": {
+      "number": "101",
+      "model": "БЕЛАЗ",
+      "max_capacity": 120.0,
+      "current_weight": 100.0,
+      "sio2_pct": 32.0,
+      "fe_pct": 67.0
+    }
+  },
+  {
+    "model": "core.truck",
+    "pk": 2,
+    "fields": {
+      "number": "102",
+      "model": "БЕЛАЗ",
+      "max_capacity": 120.0,
+      "current_weight": 125.0,
+      "sio2_pct": 30.0,
+      "fe_pct": 65.0
+    }
+  },
+  {
+    "model": "core.truck",
+    "pk": 3,
+    "fields": {
+      "number": "K103",
+      "model": "Komatsu",
+      "max_capacity": 110.0,
+      "current_weight": 120.0,
+      "sio2_pct": 35.0,
+      "fe_pct": 62.0
+    }
+  },
+  {
+    "model": "core.stock",
+    "pk": 1,
+    "fields": {
+      "name": "Склад",
+      "volume": 900.0,
+      "sio2_pct": 34.0,
+      "fe_pct": 65.0
+    }
+  }
+]
