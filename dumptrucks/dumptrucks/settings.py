@@ -1,14 +1,16 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import dj_database_url
+
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG') == 'True'
+ALLOWED_HOSTS = ['*']
 
-ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -22,6 +24,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -29,7 +32,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ROOT_URLCONF = 'dumptrucks.urls'
 
 TEMPLATES = [
@@ -50,10 +53,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'dumptrucks.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -80,6 +84,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'core' / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
